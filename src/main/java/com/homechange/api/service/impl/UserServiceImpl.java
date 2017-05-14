@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService{
 		} else {
 			throw new UserException("User with that ID is not found", ErrorCode.USER_NOT_FOUND);
 		}
-
 	}
 
 	/**
@@ -64,7 +63,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserResponseDTO get(String username) throws UserException {
 		User result = userRepository.findByUsername(username);
-		return new UserResponseDTO(result);
+		if (result != null) {
+			return new UserResponseDTO(result);
+		} else {
+			throw new UserException("User with that username is not found", ErrorCode.USER_NOT_FOUND);
+		}
 	}
 
 	/**
@@ -76,7 +79,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserResponseDTO getByEmail(String email) throws UserException {
 		User result = userRepository.findByEmail(email);
-		return new UserResponseDTO(result);
+		if (result != null) {
+			return new UserResponseDTO(result);
+		} else {
+			throw new UserException("User with that email is not found", ErrorCode.USER_NOT_FOUND);
+		}
 	}
 
 	/**

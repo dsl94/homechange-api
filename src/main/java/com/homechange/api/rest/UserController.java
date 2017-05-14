@@ -35,10 +35,28 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/findbyid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/user/findbyid", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity findUserById(@RequestParam("id") Long id) {
 		try {
 			return ResponseEntity.ok(userService.get(id));
+		} catch (UserException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
+
+	@RequestMapping(value = "/user/findbyemail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity findUserByEmail(@RequestParam("email") String email) {
+		try {
+			return ResponseEntity.ok(userService.getByEmail(email));
+		} catch (UserException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
+
+	@RequestMapping(value = "/user/findbyusername", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity findUserByUsername(@RequestParam("username") String username) {
+		try {
+			return ResponseEntity.ok(userService.get(username));
 		} catch (UserException e) {
 			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
 		}
