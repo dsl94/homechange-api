@@ -52,11 +52,11 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 
 		</dependency>
-		<!--&lt;!&ndash; Dependency for security &ndash;&gt;
+		<!-- Dependency for security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>-->
+		</dependency>
 
 		<!-- Dependency for JWT managing -->
 		<dependency>
