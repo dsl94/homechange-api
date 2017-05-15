@@ -1,7 +1,5 @@
 package com.homechange.api.model;
 
-import com.homechange.api.rest.dto.user.UserResponseDTO;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -28,6 +26,9 @@ public class User {
 	private String address;
 	private Date dateOfBirth;
 	private String phoneNumber;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "home_id")
+	private Home home;
 
 	public Long getId() {
 		return id;
@@ -115,5 +116,13 @@ public class User {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public Home getHome() {
+		return home;
+	}
+
+	public void setHome(Home home) {
+		this.home = home;
 	}
 }

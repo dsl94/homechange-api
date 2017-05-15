@@ -2,8 +2,6 @@ package com.homechange.api.rest.dto.user;
 
 import com.homechange.api.model.User;
 
-import java.util.Date;
-
 /**
  * Created by Nemanja on 5/14/17.
  *
