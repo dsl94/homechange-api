@@ -8,9 +8,10 @@ import com.homechange.api.rest.dto.user.UserRequestDTO;
 import com.homechange.api.rest.dto.user.UserResponseDTO;
 import com.homechange.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserRepository userRepository;
 
+
 	/**
 	 * Method that saves or updates user given user request object
 	 *
@@ -33,8 +35,24 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Override
 	public UserResponseDTO save(UserRequestDTO user) throws UserException {
+
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+
 		User forSave = user.mapToUser();
+		// check for duplicate email
+		if (userRepository.findByEmail(forSave.getEmail()) != null) {
+			throw new UserException("User with that email already exists", ErrorCode.EMAIL_ALREADY_IN_USE);
+		}
+		// check for duplicate username
+		if (userRepository.findByUsername(forSave.getUsername()) != null) {
+			throw new UserException("User with that username already exists", ErrorCode.USERNAME_ALREADY_IN_USE);
+		}
+		// If no exception is thrown, user is unique and we can save it
+		// Before that we have to encode it's password
+		String encodedPassword = encoder.encode(forSave.getPassword());
+		forSave.setPassword(encodedPassword);
 		User result = userRepository.save(forSave);
+
 		return new UserResponseDTO(result);
 	}
 

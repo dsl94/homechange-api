@@ -12,5 +12,9 @@ public enum ErrorCode {
 	// Code when there are some invalid parameters in request
 	INVALID_PARAMETERS,
 	// If no specific mapping exist for error then GENERAL_ERROR code is used
-	GENERAL_ERROR
+	GENERAL_ERROR,
+	// Code used when you try to register player with used username
+	USERNAME_ALREADY_IN_USE,
+	// Code used when you try to register player with used email
+	EMAIL_ALREADY_IN_USE
 }
