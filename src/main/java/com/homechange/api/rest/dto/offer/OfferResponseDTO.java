@@ -12,6 +12,7 @@ import com.homechange.api.rest.dto.user.UserResponseDTO;
  */
 public class OfferResponseDTO {
 
+	private Long id;
 	private String startDate;
 	private String endDate;
 	private String details;
@@ -25,6 +26,7 @@ public class OfferResponseDTO {
 	}
 
 	public OfferResponseDTO(Offer offer, String formatedStartDate, String formatedEndDate) {
+		this.id = offer.getId();
 		this.details = offer.getDetails();
 		this.country = offer.getCountry();
 		this.city = offer.getCity();

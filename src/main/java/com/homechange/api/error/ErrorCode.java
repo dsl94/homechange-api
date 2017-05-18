@@ -22,5 +22,11 @@ public enum ErrorCode {
 	// Code when you try to delete or edit home which is in offer
 	HOME_IS_IN_OFFER,
 	// Code when you try to delete Home that does not exist
-	HOME_NOT_FOUND
+	HOME_NOT_FOUND,
+	// Code when user trys to deactivate offer that is not his own
+	NOT_USERS_OFFER,
+	// Code when offer is not found
+	OFFER_NOT_FOUND,
+	// Code when offer is not avtive
+	OFFER_IS_NOT_ACTIVE
 }

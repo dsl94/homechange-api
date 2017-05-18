@@ -8,10 +8,7 @@ import com.homechange.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,6 +28,15 @@ public class OfferController {
 	public ResponseEntity createOffer(@Valid @RequestBody CreateOfferRequestDTO requestDTO){
 		try {
 			return ResponseEntity.ok(offerService.createOffer(requestDTO));
+		} catch (OfferException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
+
+	@RequestMapping(value = "/sec/deactivateffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity deactivateOffer(@RequestParam Long id){
+		try {
+			return ResponseEntity.ok(offerService.deactivateOffer(id));
 		} catch (OfferException e) {
 			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
 		}
