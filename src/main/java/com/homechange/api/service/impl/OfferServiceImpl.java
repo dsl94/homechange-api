@@ -52,6 +52,9 @@ public class OfferServiceImpl implements OfferService{
 		if (user == null) {
 			throw new OfferException("User not found", ErrorCode.USER_NOT_FOUND);
 		}
+		if (user.getHome() == null) {
+			throw new OfferException("User must have home before posting an offer", ErrorCode.HOME_NOT_FOUND);
+		}
 		forSave.setUser(user);
 		forSave.setCountry(user.getCountry());
 		forSave.setCity(user.getCity());
