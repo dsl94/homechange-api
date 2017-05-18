@@ -1,0 +1,38 @@
+package com.homechange.api.rest;
+
+import com.homechange.api.error.ErrorMessage;
+import com.homechange.api.error.OfferException;
+import com.homechange.api.rest.dto.offer.CreateOfferRequestDTO;
+import com.homechange.api.service.OfferService;
+import com.homechange.api.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+/**
+ * Created by Nemanja on 5/18/17.
+ *
+ * Controller for Offer
+ */
+@RestController
+@RequestMapping("/api")
+public class OfferController {
+
+	@Autowired
+	private OfferService offerService;
+
+	@RequestMapping(value = "/sec/createoffer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity createOffer(@Valid @RequestBody CreateOfferRequestDTO requestDTO){
+		try {
+			return ResponseEntity.ok(offerService.createOffer(requestDTO));
+		} catch (OfferException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
+}

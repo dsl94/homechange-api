@@ -2,6 +2,7 @@ package com.homechange.api.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Nemanja on 5/14/17.
@@ -29,6 +30,8 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "home_id")
 	private Home home;
+	@OneToMany(mappedBy = "user")
+	private List<Offer> offers;
 
 	public Long getId() {
 		return id;
@@ -124,5 +127,13 @@ public class User {
 
 	public void setHome(Home home) {
 		this.home = home;
+	}
+
+	public List<Offer> getOffers() {
+		return offers;
+	}
+
+	public void setOffers(List<Offer> offers) {
+		this.offers = offers;
 	}
 }
