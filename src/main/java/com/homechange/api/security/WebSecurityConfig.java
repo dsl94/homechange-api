@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  *
  * Here we are configuring access to / for everyone and /login for everyone
  * and we are filtering /login requests with JWT Filter (see that class)
- * and we are filtering all other requests with JWTAuthenticationFilter (see thath class)
+ * and we are filtering all other requests with JWTAuthenticationFilter (see that class)
  * to check if there is JWT in header
  */
 @Configuration
@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 				.antMatchers("/api/register").permitAll()
+				.antMatchers("/api/offerdetails").permitAll()
 				.antMatchers(HttpMethod.POST, "/api/login").permitAll()
 				.anyRequest().authenticated()
 				.and()
@@ -48,7 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	/**
 	 * We are creating default user with ADMIN role
-	 * TODO: REMOVE THIS AND MAKE SOMETHING THAT WORKS
 	 * @param auth
 	 * @throws Exception
 	 */

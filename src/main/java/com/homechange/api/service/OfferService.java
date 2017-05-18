@@ -32,4 +32,12 @@ public interface OfferService {
 	 * @throws OfferException
 	 */
 	OfferResponseDTO deactivateOffer(Long id) throws OfferException;
+
+	/**
+	 * Method that load offer by its id
+	 * @param id Id of offer
+	 * @return Offer response
+	 * @throws OfferException
+	 */
+	OfferResponseDTO getOfferById(Long id) throws OfferException;
 }

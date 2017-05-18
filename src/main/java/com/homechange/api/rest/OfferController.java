@@ -41,4 +41,13 @@ public class OfferController {
 			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
 		}
 	}
+
+	@RequestMapping(value = "/offerdetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity offerDetails(@RequestParam Long id){
+		try {
+			return ResponseEntity.ok(offerService.getOfferById(id));
+		} catch (OfferException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
 }

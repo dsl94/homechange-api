@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import sun.awt.UNIXToolkit;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -108,6 +109,23 @@ public class OfferServiceImpl implements OfferService{
 		Offer result = offerRepository.save(offer);
 
 		// Map to response and return
+		return new OfferResponseDTO(offer, Utils.formatDate(offer.getStartDate()), Utils.formatDate(offer.getEndDate()));
+	}
+
+	/**
+	 * Method that load offer by its id
+	 * @param id Id of offer
+	 * @return Offer response
+	 * @throws OfferException
+	 */
+	@Override
+	public OfferResponseDTO getOfferById(Long id) throws OfferException {
+		// Try to find offer
+		Offer offer = offerRepository.findOne(id);
+		if (offer == null) {
+			throw new OfferException("Offer with that id is not found", ErrorCode.OFFER_NOT_FOUND);
+		}
+		// If exist, map and return
 		return new OfferResponseDTO(offer, Utils.formatDate(offer.getStartDate()), Utils.formatDate(offer.getEndDate()));
 	}
 
