@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService{
 
 		User forSave = user.mapToUser();
 		// check for duplicate email
-		if (userRepository.findByEmail(forSave.getEmail()) != null) {
+		if (userRepository.findByEmailIgnoreCase(forSave.getEmail()) != null) {
 			throw new UserException("User with that email already exists", ErrorCode.EMAIL_ALREADY_IN_USE);
 		}
 		// check for duplicate username
-		if (userRepository.findByUsername(forSave.getUsername()) != null) {
+		if (userRepository.findByUsernameIgnoreCase(forSave.getUsername()) != null) {
 			throw new UserException("User with that username already exists", ErrorCode.USERNAME_ALREADY_IN_USE);
 		}
 		// If no exception is thrown, user is unique and we can save it
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Override
 	public UserResponseDTO get(String username) throws UserException {
-		User result = userRepository.findByUsername(username);
+		User result = userRepository.findByUsernameIgnoreCase(username);
 		if (result != null) {
 			return new UserResponseDTO(result);
 		} else {
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService{
 	 */
 	@Override
 	public UserResponseDTO getByEmail(String email) throws UserException {
-		User result = userRepository.findByEmail(email);
+		User result = userRepository.findByEmailIgnoreCase(email);
 		if (result != null) {
 			return new UserResponseDTO(result);
 		} else {

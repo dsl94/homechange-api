@@ -48,7 +48,7 @@ public class OfferServiceImpl implements OfferService{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = (String) auth.getPrincipal();
 		// Get user from repository
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByUsernameIgnoreCase(username);
 		// Check if user exists, it should always exist
 		if (user == null) {
 			throw new OfferException("User not found", ErrorCode.USER_NOT_FOUND);

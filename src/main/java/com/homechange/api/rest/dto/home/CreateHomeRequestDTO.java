@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 public class CreateHomeRequestDTO {
 
 	@NotNull
-	private String username;
-	@NotNull
 	private Integer bedroomNumber;
 	@NotNull
 	private Integer bathroomNumber;
@@ -25,14 +23,6 @@ public class CreateHomeRequestDTO {
 	private Boolean airConditioning = true;
 	private Boolean heating = true;
 	private Boolean petsAllowed = false;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public Integer getBedroomNumber() {
 		return bedroomNumber;

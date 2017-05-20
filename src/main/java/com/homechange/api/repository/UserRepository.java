@@ -13,12 +13,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	 * @param username Username
 	 * @return User
 	 */
-	User findByUsername(String username);
+	User findByUsernameIgnoreCase(String username);
 
 	/**
 	 * Method that finds user by Email
 	 * @param email Email
 	 * @return User
 	 */
-	User findByEmail(String email);
+	User findByEmailIgnoreCase(String email);
 }

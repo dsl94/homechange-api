@@ -10,6 +10,8 @@ import com.homechange.api.rest.dto.home.CreateHomeRequestDTO;
 import com.homechange.api.rest.dto.home.HomeResponseDTO;
 import com.homechange.api.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,8 +36,11 @@ public class HomeServiceImpl implements HomeService {
 	 */
 	@Override
 	public HomeResponseDTO create(CreateHomeRequestDTO homeDTO) throws HomeException {
-		// First try to find user
-		User user = userRepository.findByUsername(homeDTO.getUsername());
+		// First get logged in user's username
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = (String) auth.getPrincipal();
+		// Then try to find user
+		User user = userRepository.findByUsernameIgnoreCase(username);
 		if (user == null) {
 			throw new HomeException("User for which you are trying to create home does not exist", ErrorCode.USER_NOT_FOUND);
 		}
@@ -59,6 +64,7 @@ public class HomeServiceImpl implements HomeService {
 	 *
 	 * @param home Home
 	 * @return updated Home
+	 * TODO IMPLEMENT THIS
 	 */
 	@Override
 	public Home update(Home home) {
@@ -70,6 +76,7 @@ public class HomeServiceImpl implements HomeService {
 	 *
 	 * @param username Username
 	 * @return Home
+	 * TODO IMPLEMENT THIS
 	 */
 	@Override
 	public Home searchByUser(String username) {
@@ -87,7 +94,7 @@ public class HomeServiceImpl implements HomeService {
 		if (home == null) {
 			throw new HomeException("Home with that ID was not found", ErrorCode.HOME_NOT_FOUND);
 		}
-		User user = userRepository.findByUsername(home.getUser().getUsername());
+		User user = userRepository.findByUsernameIgnoreCase(home.getUser().getUsername());
 		user.setHome(null);
 		userRepository.save(user);
 		homeRepository.delete(home);
