@@ -9,6 +9,7 @@ import com.homechange.api.repository.OfferRepository;
 import com.homechange.api.repository.UserRepository;
 import com.homechange.api.rest.dto.offer.CreateOfferRequestDTO;
 import com.homechange.api.rest.dto.offer.OfferResponseDTO;
+import com.homechange.api.rest.dto.offer.OffersDTO;
 import com.homechange.api.service.OfferService;
 import com.homechange.api.service.UserService;
 import com.homechange.api.util.Utils;
@@ -18,8 +19,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import sun.awt.UNIXToolkit;
 
+import javax.rmi.CORBA.Util;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nemanja on 5/18/17.
@@ -127,6 +133,60 @@ public class OfferServiceImpl implements OfferService{
 		}
 		// If exist, map and return
 		return new OfferResponseDTO(offer, Utils.formatDate(offer.getStartDate()), Utils.formatDate(offer.getEndDate()));
+	}
+
+	/**
+	 * Method that searches for all offers by country or by city
+	 * @param query Country or City name
+	 * @return OffersDTO
+	 */
+	@Override
+	public OffersDTO findOffers(String query) {
+		// Get offers by country
+		OffersDTO resultByCountry = getOffersByCountry(query);
+		// Get offers by city
+		OffersDTO resultByCity = getOffersByCity(query);
+		OffersDTO result = new OffersDTO();
+		result.setNumberOfResults(resultByCountry.getNumberOfResults() + resultByCity.getNumberOfResults());
+		List<OfferResponseDTO> resultList = new ArrayList<>();
+		// Join results
+		resultList.addAll(resultByCity.getOffers());
+		resultList.addAll(resultByCountry.getOffers());
+		result.setOffers(resultList);
+
+		return result;
+	}
+
+	/**
+	 * Private helper method that searches by Country
+	 * @param country
+	 * @return
+	 */
+	private OffersDTO getOffersByCountry(String country) {
+		List<Offer> offers = offerRepository.findByCountryIgnoreCaseAndStatusActive(country.toUpperCase());
+		OffersDTO result = new OffersDTO();
+		List<OfferResponseDTO> offerResponseDTOS = offers.stream().map(offer -> new OfferResponseDTO(offer, Utils.formatDate(offer.getStartDate()),
+				Utils.formatDate(offer.getEndDate()))).collect(Collectors.toList());
+		result.setNumberOfResults(offerResponseDTOS.size());
+		result.setOffers(offerResponseDTOS);
+
+		return result;
+	}
+
+	/**
+	 * Private helper method that searches by City
+	 * @param city
+	 * @return
+	 */
+	private OffersDTO getOffersByCity(String city) {
+		List<Offer> offers = offerRepository.findByCityIgnoreCaseAndStatusActive(city.toUpperCase());
+		OffersDTO result = new OffersDTO();
+		List<OfferResponseDTO> offerResponseDTOS = offers.stream().map(offer -> new OfferResponseDTO(offer, Utils.formatDate(offer.getStartDate()),
+				Utils.formatDate(offer.getEndDate()))).collect(Collectors.toList());
+		result.setNumberOfResults(offerResponseDTOS.size());
+		result.setOffers(offerResponseDTOS);
+
+		return result;
 	}
 
 }

@@ -4,6 +4,9 @@ import com.homechange.api.error.OfferException;
 import com.homechange.api.model.Offer;
 import com.homechange.api.rest.dto.offer.CreateOfferRequestDTO;
 import com.homechange.api.rest.dto.offer.OfferResponseDTO;
+import com.homechange.api.rest.dto.offer.OffersDTO;
+
+import java.util.List;
 
 /**
  * Created by Nemanja on 5/18/17.
@@ -40,4 +43,11 @@ public interface OfferService {
 	 * @throws OfferException
 	 */
 	OfferResponseDTO getOfferById(Long id) throws OfferException;
+
+	/**
+	 * Method that searches for all offers by country or by city
+	 * @param query Country or City name
+	 * @return OffersDTO
+	 */
+	OffersDTO findOffers(String query);
 }

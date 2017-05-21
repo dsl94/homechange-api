@@ -50,4 +50,9 @@ public class OfferController {
 			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
 		}
 	}
+
+	@RequestMapping(value = "/findoffer", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity findOffers(@RequestParam String query){
+		return ResponseEntity.ok(offerService.findOffers(query));
+	}
 }
