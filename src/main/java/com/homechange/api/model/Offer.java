@@ -2,6 +2,7 @@ package com.homechange.api.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Nemanja on 5/16/17.
@@ -17,15 +18,21 @@ public class Offer {
 
 	@Column(nullable = false)
 	private Date startDate;
+
 	@Column(nullable = false)
 	private Date endDate;
+
 	private String country;
 	private String city;
 	private String details;
 	private OfferStatus status;
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
+
+	@OneToMany(mappedBy = "offer")
+	private List<Message> messages;
 
 	public Long getId() {
 		return id;
@@ -89,5 +96,13 @@ public class Offer {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 }
