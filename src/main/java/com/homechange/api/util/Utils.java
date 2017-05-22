@@ -21,4 +21,15 @@ public class Utils {
 		String formatedDate = format.format(date);
 		return formatedDate;
 	}
+
+	/**
+	 * Helper method for formatting date and time
+	 * @param date Date
+	 * @return Date and time
+	 */
+	public static String formatDateAndTime(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		String formattedDateAndTime = format.format(date);
+		return formattedDateAndTime;
+	}
 }
