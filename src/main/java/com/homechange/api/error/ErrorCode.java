@@ -30,5 +30,11 @@ public enum ErrorCode {
 	// Code when offer is not active
 	OFFER_IS_NOT_ACTIVE,
 	// Code when user tries to send message to it's own offer
-	OFFER_IS_USERS_OFFER
+	OFFER_IS_USERS_OFFER,
+	// Code when message does not exist
+	MESSAGE_NOT_FOUND,
+	// Code when offer is not the same as in old message
+	OFFER_NOT_THE_SAME,
+	// Code when users are not the same as in last message
+	USERS_NOT_THE_SAME
 }

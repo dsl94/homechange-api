@@ -2,6 +2,7 @@ package com.homechange.api.rest;
 
 import com.homechange.api.error.ErrorMessage;
 import com.homechange.api.error.MessageException;
+import com.homechange.api.rest.dto.message.ReplyMessageDTO;
 import com.homechange.api.rest.dto.message.SendMessageDTO;
 import com.homechange.api.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,15 @@ public class MessageController {
 	public ResponseEntity sendMessage(@Valid @RequestBody SendMessageDTO messageDTO){
 		try {
 			return ResponseEntity.ok(messageService.sendMessage(messageDTO));
+		} catch (MessageException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
+
+	@RequestMapping(value = "/messagereply", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity replyOnMessage(@Valid @RequestBody ReplyMessageDTO replyMessageDTO) {
+		try {
+			return ResponseEntity.ok(messageService.replyOnMessage(replyMessageDTO));
 		} catch (MessageException e) {
 			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
 		}

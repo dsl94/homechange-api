@@ -9,6 +9,7 @@ import com.homechange.api.model.Message;
  */
 public class MessageResponseDTO {
 
+	private Long messageId;
 	private String sentBy;
 	private String sentTo;
 	private String dateAndTime;
@@ -19,6 +20,7 @@ public class MessageResponseDTO {
 
 	// Contructor that maps Message to this
 	public MessageResponseDTO(Message message, String dateAndTime) {
+		this.messageId = message.getId();
 		this.sentBy = message.getSender().getUsername();
 		this.sentTo = message.getRecipient().getUsername();
 		this.message = message.getMessage();
@@ -55,5 +57,13 @@ public class MessageResponseDTO {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Long getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(Long messageId) {
+		this.messageId = messageId;
 	}
 }

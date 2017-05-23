@@ -2,6 +2,8 @@ package com.homechange.api.service;
 
 import com.homechange.api.error.MessageException;
 import com.homechange.api.rest.dto.message.MessageResponseDTO;
+import com.homechange.api.rest.dto.message.MessagesResponseDTO;
+import com.homechange.api.rest.dto.message.ReplyMessageDTO;
 import com.homechange.api.rest.dto.message.SendMessageDTO;
 
 /**
@@ -17,4 +19,12 @@ public interface MessageService {
 	 * @return Message response dto
 	 */
 	MessageResponseDTO sendMessage(SendMessageDTO messageDTO) throws MessageException;
+
+	/**
+	 * Method used for replying in messages
+	 * @param replyMessageDTO Reply on message DTO
+	 * @return Messages response
+	 * @throws MessageException
+	 */
+	MessagesResponseDTO replyOnMessage(ReplyMessageDTO replyMessageDTO) throws MessageException;
 }
