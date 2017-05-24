@@ -64,7 +64,7 @@ public class HomeServiceImpl implements HomeService {
 	 *
 	 * @param home Home
 	 * @return updated Home
-	 * TODO IMPLEMENT THIS
+	 * TODO IMPLEMENT THIS -> This will be part of version 1.1
 	 */
 	@Override
 	public Home update(Home home) {
@@ -79,8 +79,38 @@ public class HomeServiceImpl implements HomeService {
 	 * TODO IMPLEMENT THIS
 	 */
 	@Override
-	public Home searchByUser(String username) {
-		return null;
+	public HomeResponseDTO searchByUser(String username) throws HomeException {
+		User user = userRepository.findByUsernameIgnoreCase(username);
+		// Validate if user exist
+		if (user == null) {
+			throw new HomeException("User with that username not found", ErrorCode.USER_NOT_FOUND);
+		}
+		// Try to read home of the user
+		Home home = user.getHome();
+		// Check if exist
+		if (home == null) {
+			throw new HomeException("That user has no home", ErrorCode.HOME_NOT_FOUND);
+		}
+
+		// If everything is ok map to response and return
+		return new HomeResponseDTO(home);
+	}
+
+	/**
+	 * Method that searches for home by it's id
+	 * @param id Id
+	 * @return Home response
+	 * @throws HomeException
+	 */
+	@Override
+	public HomeResponseDTO searchById(Long id) throws HomeException {
+		Home home = homeRepository.findOne(id);
+		// Validate if home exist
+		if (home == null) {
+			throw new HomeException("Home with that id does not exist", ErrorCode.HOME_NOT_FOUND);
+		}
+		// If exist just map it and return
+		return new HomeResponseDTO(home);
 	}
 
 	/**

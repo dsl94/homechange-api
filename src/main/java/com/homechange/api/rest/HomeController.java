@@ -2,8 +2,10 @@ package com.homechange.api.rest;
 
 import com.homechange.api.error.ErrorMessage;
 import com.homechange.api.error.HomeException;
+import com.homechange.api.model.Home;
 import com.homechange.api.rest.dto.home.CreateHomeRequestDTO;
 import com.homechange.api.service.HomeService;
+import com.homechange.api.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +40,21 @@ public class HomeController {
 		try {
 			homeService.delete(id);
 			return new ResponseEntity(HttpStatus.OK);
+		} catch (HomeException e) {
+			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
+		}
+	}
+
+	@RequestMapping(value = "/homedetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity homeDetails(@RequestParam(value = "username", required = false) String username,
+									  @RequestParam(value = "homeId", required = false) Long homeId){
+		try {
+			Utils.validateBothParamsNotPresent(username, homeId);
+			Utils.validateBothParamsPresent(username, homeId);
+			if (homeId != null) {
+				return ResponseEntity.ok(homeService.searchById(homeId));
+			}
+			return ResponseEntity.ok(homeService.searchByUser(username));
 		} catch (HomeException e) {
 			return ResponseEntity.badRequest().body(new ErrorMessage(e.getErrorCode(), e.getMessage()));
 		}

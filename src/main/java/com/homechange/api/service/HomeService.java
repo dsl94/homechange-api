@@ -31,7 +31,15 @@ public interface HomeService {
 	 * @param username Username
 	 * @return Home
 	 */
-	Home searchByUser(String username);
+	HomeResponseDTO searchByUser(String username) throws HomeException;
+
+	/**
+	 * Method that searches for home by it's id
+	 * @param id Id
+	 * @return Home response
+	 * @throws HomeException
+	 */
+	HomeResponseDTO searchById(Long id) throws HomeException;
 
 	/**
 	 * Method for deleting Home
