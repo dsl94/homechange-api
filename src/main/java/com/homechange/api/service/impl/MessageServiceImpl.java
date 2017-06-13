@@ -9,10 +9,7 @@ import com.homechange.api.model.User;
 import com.homechange.api.repository.MessageRepository;
 import com.homechange.api.repository.OfferRepository;
 import com.homechange.api.repository.UserRepository;
-import com.homechange.api.rest.dto.message.MessageResponseDTO;
-import com.homechange.api.rest.dto.message.MessagesResponseDTO;
-import com.homechange.api.rest.dto.message.ReplyMessageDTO;
-import com.homechange.api.rest.dto.message.SendMessageDTO;
+import com.homechange.api.rest.dto.message.*;
 import com.homechange.api.service.MessageService;
 import com.homechange.api.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Nemanja on 5/21/17.
@@ -137,6 +133,35 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	/**
+	 * Method that reads all users messages
+	 * @param username Username
+	 * @return List of messages
+	 */
+	@Override
+	public UsersMessagesDTO getUsersMessages(String username) throws MessageException {
+		/*User user = userRepository.findByUsernameIgnoreCase(username);
+		// Validate user
+		if (user == null) {
+			throw new MessageException("User with that username not found", ErrorCode.USER_NOT_FOUND);
+		}
+		List<Message> allMessages = messageRepository.findBySenderOrRecipientOrderBySentDateAndTimeAsc(user, user);
+		// Now convert this to response
+		UsersMessagesDTO response = new UsersMessagesDTO();
+		List<UsersMessageDTO> messageDTOS = new ArrayList<>();
+		for (Message message : allMessages) {
+			String otherUser;
+			if (!message.getRecipient().getUsername().equalsIgnoreCase(username)) {
+				otherUser = message.getRecipient().getUsername();
+			} else {
+				otherUser = message.getSender().getUsername();
+			}
+			UsersMessageDTO messageDTO = new UsersMessageDTO(message.getOffer().getCity(),
+					Utils.INSTANCE.formatDate(message.getOffer().getStartDate()), )
+		}*/
+		return null;
+	}
+
+	/**
 	 * Helper method that finds all messages in thread
 	 * @param offer Offer
 	 * @return Messages in thread
@@ -168,7 +193,11 @@ public class MessageServiceImpl implements MessageService {
 		MessagesResponseDTO result = new MessagesResponseDTO();
 		result.setNumberOfMessages(messages.size());
 		result.setOfferId(offerId);
-		List<MessageResponseDTO> messageResponseDTOs = messages.stream().map(message -> new MessageResponseDTO(message, Utils.formatDateAndTime(message.getSentDateAndTime()))).collect(Collectors.toList());
+		List<MessageResponseDTO> messageResponseDTOs = new ArrayList<>();
+		for (Message message : messages) {
+			MessageResponseDTO messageResponseDTO = new MessageResponseDTO(message, Utils.formatDateAndTime(message.getSentDateAndTime()));
+			messageResponseDTOs.add(messageResponseDTO);
+		}
 		result.setMessages(messageResponseDTOs);
 		return result;
 	}

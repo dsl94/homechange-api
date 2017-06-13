@@ -1,10 +1,7 @@
 package com.homechange.api.service;
 
 import com.homechange.api.error.MessageException;
-import com.homechange.api.rest.dto.message.MessageResponseDTO;
-import com.homechange.api.rest.dto.message.MessagesResponseDTO;
-import com.homechange.api.rest.dto.message.ReplyMessageDTO;
-import com.homechange.api.rest.dto.message.SendMessageDTO;
+import com.homechange.api.rest.dto.message.*;
 
 /**
  * Created by Nemanja on 5/21/17.
@@ -27,4 +24,11 @@ public interface MessageService {
 	 * @throws MessageException
 	 */
 	MessagesResponseDTO replyOnMessage(ReplyMessageDTO replyMessageDTO) throws MessageException;
+
+	/**
+	 * Method that reads all users messages
+	 * @param  username Username
+	 * @return List of messages
+	 */
+	UsersMessagesDTO getUsersMessages(String username) throws MessageException;
 }

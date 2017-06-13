@@ -2,7 +2,6 @@ package com.homechange.api.rest;
 
 import com.homechange.api.error.ErrorMessage;
 import com.homechange.api.error.HomeException;
-import com.homechange.api.model.Home;
 import com.homechange.api.rest.dto.home.CreateHomeRequestDTO;
 import com.homechange.api.service.HomeService;
 import com.homechange.api.util.Utils;

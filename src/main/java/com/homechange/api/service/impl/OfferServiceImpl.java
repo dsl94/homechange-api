@@ -11,19 +11,13 @@ import com.homechange.api.rest.dto.offer.CreateOfferRequestDTO;
 import com.homechange.api.rest.dto.offer.OfferResponseDTO;
 import com.homechange.api.rest.dto.offer.OffersDTO;
 import com.homechange.api.service.OfferService;
-import com.homechange.api.service.UserService;
 import com.homechange.api.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import sun.awt.UNIXToolkit;
 
-import javax.rmi.CORBA.Util;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
