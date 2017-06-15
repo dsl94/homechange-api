@@ -32,9 +32,18 @@ interface MessageService {
 
     /**
      * Method that reads all users messages
-     * *
+     * User is logged in user
+     *
      * @return List of messages
      */
     @Throws(MessageException::class)
     fun getUsersMessages(): UsersMessagesDTO
+
+    /**
+     * Method that returns all thread messages based on id of last message
+     * It also considers logged in user
+     *
+     * @return List of messages
+     */
+    fun getThreadMessages(lastMessageId: Long): MessagesResponseDTO
 }

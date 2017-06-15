@@ -53,4 +53,13 @@ class MessageController {
             return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
         }
     }
+
+    @RequestMapping(value = "/threadmessages", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun getThreadMessages(@RequestParam lastMessageId: Long): ResponseEntity<Any> {
+        try {
+            return ResponseEntity.ok(messageService?.getThreadMessages(lastMessageId))
+        } catch (e: MessageException) {
+            return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
+        }
+    }
 }

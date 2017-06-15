@@ -36,5 +36,7 @@ enum class ErrorCode {
     // Code when offer is not the same as in old message
     OFFER_NOT_THE_SAME,
     // Code when users are not the same as in last message
-    USERS_NOT_THE_SAME
+    USERS_NOT_THE_SAME,
+    // Code when thread is not users thread
+    THREAD_IS_NOT_USERS
 }

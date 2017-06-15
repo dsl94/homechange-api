@@ -160,6 +160,25 @@ class MessageServiceImpl : MessageService {
     }
 
     /**
+     * Method that returns all thread messages based on id of last message
+     * It also considers logged in user
+     *
+     * @return List of messages
+     */
+    override fun getThreadMessages(lastMessageId: Long): MessagesResponseDTO {
+        val lastMessage = messageRepository?.findOne(lastMessageId) ?: throw MessageException("Message with that ID does not exist", ErrorCode.MESSAGE_NOT_FOUND)
+        // Getting logged in username
+        val auth = SecurityContextHolder.getContext().authentication
+        val loggedInUser = auth.principal as String
+        if (lastMessage.sender?.username != loggedInUser && lastMessage.recipient?.username != loggedInUser) {
+            throw MessageException("Thread that message belongs does not belong to logged in user", ErrorCode.THREAD_IS_NOT_USERS)
+        }
+        val allMessagesInThread = messagesInThread(lastMessage.offer, lastMessage.sender?.username, lastMessage.recipient?.username)
+        val response = mapToMessagesResponse(allMessagesInThread, lastMessage.offer?.id)
+        return response
+    }
+
+    /**
      * Helper method that finds all messages in thread
      * @param offer Offer
      * *
