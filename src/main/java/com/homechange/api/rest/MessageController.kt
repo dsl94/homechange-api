@@ -9,10 +9,7 @@ import com.homechange.api.service.MessageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 import javax.validation.Valid
 
@@ -41,10 +38,19 @@ class MessageController {
     @RequestMapping(value = "/messagereply", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun replyOnMessage(@Valid @RequestBody replyMessageDTO: ReplyMessageDTO): ResponseEntity<Any> {
         try {
-            return ResponseEntity.ok(messageService!!.replyOnMessage(replyMessageDTO))
+            return ResponseEntity.ok(messageService?.replyOnMessage(replyMessageDTO))
         } catch (e: MessageException) {
             return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
         }
 
+    }
+
+    @RequestMapping(value = "/usermessages", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun getUserMessages(): ResponseEntity<Any> {
+        try {
+            return ResponseEntity.ok(messageService?.getUsersMessages())
+        } catch (e: MessageException) {
+            return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
+        }
     }
 }

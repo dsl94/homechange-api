@@ -32,10 +32,9 @@ interface MessageService {
 
     /**
      * Method that reads all users messages
-     * @param  username Username
      * *
      * @return List of messages
      */
     @Throws(MessageException::class)
-    fun getUsersMessages(username: String): UsersMessagesDTO
+    fun getUsersMessages(): UsersMessagesDTO
 }

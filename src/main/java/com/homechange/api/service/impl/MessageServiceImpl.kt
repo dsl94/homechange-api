@@ -128,27 +128,35 @@ class MessageServiceImpl : MessageService {
      * @return List of messages
      */
     @Throws(MessageException::class)
-    override fun getUsersMessages(username: String): UsersMessagesDTO {
-        /*User user = userRepository.findByUsernameIgnoreCase(username);
-		// Validate user
-		if (user == null) {
-			throw new MessageException("User with that username not found", ErrorCode.USER_NOT_FOUND);
-		}
-		List<Message> allMessages = messageRepository.findBySenderOrRecipientOrderBySentDateAndTimeAsc(user, user);
-		// Now convert this to response
-		UsersMessagesDTO response = new UsersMessagesDTO();
-		List<UsersMessageDTO> messageDTOS = new ArrayList<>();
-		for (Message message : allMessages) {
-			String otherUser;
-			if (!message.getRecipient().getUsername().equalsIgnoreCase(username)) {
-				otherUser = message.getRecipient().getUsername();
-			} else {
-				otherUser = message.getSender().getUsername();
-			}
-			UsersMessageDTO messageDTO = new UsersMessageDTO(message.getOffer().getCity(),
-					Utils.INSTANCE.formatDate(message.getOffer().getStartDate()), )
-		}*/
-        TODO()
+    override fun getUsersMessages(): UsersMessagesDTO {
+        // Getting logged in username
+        val auth = SecurityContextHolder.getContext().authentication
+        val username = auth.principal as String
+        val user = userRepository?.findByUsernameIgnoreCase(username) ?: throw MessageException("User with that username not found", ErrorCode.USER_NOT_FOUND)
+        val response = UsersMessagesDTO()
+        val allMessages = messageRepository?.findBySenderOrRecipientOrderBySentDateAndTimeAsc(user, user)
+        val userMessages = mutableListOf<UsersMessageDTO>()
+        val passedOffers = mutableListOf<Long>()
+        val passedUsers = mutableListOf<Long>()
+
+        for (message in allMessages!!) {
+            val oderUserId = if(message.recipient?.username == username) message.sender?.id else message.recipient?.id
+            if (passedOffers.contains(message.offer?.id) && passedUsers.contains(oderUserId)) {
+                continue
+            } else {
+                passedOffers.add(message.offer?.id?:1)
+                passedUsers.add(oderUserId?:1)
+                val inThread = messagesInThread(message.offer, message.sender?.username, message.recipient?.username)
+                val lastMessage = inThread.last()
+                val recipient = if(message.recipient?.username == username) message.sender?.username else message.recipient?.username
+                val userMessage = UsersMessageDTO(message.offer?.city?:"", message.offer?.id?:1, Utils.formatDate(message.offer?.startDate),
+                                                    Utils.formatDate(message.offer?.endDate), recipient?:"", lastMessage.id)
+                userMessages.add(userMessage)
+            }
+        }
+        response.numberOfMessages = userMessages.size
+        response.messages = userMessages
+        return response
     }
 
     /**
@@ -157,8 +165,8 @@ class MessageServiceImpl : MessageService {
      * *
      * @return Messages in thread
      */
-    private fun messagesInThread(offer: Offer, username1: String?, username2: String?): List<Message> {
-        val messagesForOffer = messageRepository?.findByOfferOrderBySentDateAndTimeAsc(offer)
+    private fun messagesInThread(offer: Offer?, username1: String?, username2: String?): List<Message> {
+        val messagesForOffer = messageRepository?.findByOfferOrderBySentDateAndTimeAsc(offer!!)
         val threadMessages = ArrayList<Message>()
 
         for (message in messagesForOffer!!) {
