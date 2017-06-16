@@ -2,6 +2,7 @@ package com.homechange.api.service
 
 import com.homechange.api.error.UserException
 import com.homechange.api.rest.dto.user.LoggedInUserProfileDTO
+import com.homechange.api.rest.dto.user.PublicUserProfileDTO
 import com.homechange.api.rest.dto.user.UserRequestDTO
 import com.homechange.api.rest.dto.user.UserResponseDTO
 
@@ -59,4 +60,10 @@ interface UserService {
      */
     @Throws(UserException::class)
     fun loggedInUserProfile(): LoggedInUserProfileDTO
+
+    /**
+     * Method that return profile of any user
+     */
+    @Throws(UserException::class)
+    fun publicInUserProfile(username: String): PublicUserProfileDTO
 }

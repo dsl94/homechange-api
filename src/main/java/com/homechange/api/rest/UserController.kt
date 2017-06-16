@@ -75,6 +75,16 @@ class UserController {
 
     }
 
+    @RequestMapping(value = "/profile", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun publicUserProfile(@RequestParam("username") username: String): ResponseEntity<Any> {
+        try {
+            return ResponseEntity.ok(userService?.publicInUserProfile(username))
+        } catch (e: UserException) {
+            return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
+        }
+
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMyException(exception: Exception): ResponseEntity<Any> {
         return ResponseEntity.badRequest().body(ErrorMessage(ErrorCode.INVALID_PARAMETERS,

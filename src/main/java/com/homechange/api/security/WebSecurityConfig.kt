@@ -38,6 +38,7 @@ open class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers("/api/offerdetails").permitAll()
                 .antMatchers("/api/findoffer").permitAll()
                 .antMatchers("/api/homedetails").permitAll()
+                .antMatchers("/api/profile").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
