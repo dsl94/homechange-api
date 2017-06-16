@@ -6,6 +6,7 @@ import com.homechange.api.model.OfferStatus
 import com.homechange.api.repository.OfferRepository
 import com.homechange.api.repository.ReviewRepository
 import com.homechange.api.repository.UserRepository
+import com.homechange.api.rest.dto.review.GuestReviewRequestDTO
 import com.homechange.api.rest.dto.review.OwnerReviewRequestDTO
 import com.homechange.api.rest.dto.review.ReviewResponseDTO
 import com.homechange.api.service.MessageService
@@ -96,6 +97,46 @@ class ReviewServiceImpl : ReviewService{
         offerRepository.save(offer)
 
         // Mapping to response and returning it
+        return ReviewResponseDTO(result)
+    }
+
+    /**
+     * Method used when guest is reviewing owner
+     *
+     * @return Review response DTO
+     */
+    override fun guestReview(reviewDTO: GuestReviewRequestDTO): ReviewResponseDTO {
+        // First we try to load review on which we are responding
+        val oldReview = reviewRepository?.findOne(reviewDTO.ownerReviewId) ?: throw ReviewException("Review on which you are trying to respond is not found", ErrorCode.REVIEW_NOT_FOUND)
+        // Getting logged in user
+        val auth = SecurityContextHolder.getContext().authentication
+        val loggedInUsername = auth.principal as String
+        val loggedInUser = userRepository?.findByUsernameIgnoreCase(loggedInUsername) ?: throw ReviewException("User not found", ErrorCode.USER_NOT_FOUND)
+        // Then we check if user form review on which we are responding is same as logged user
+        if (!loggedInUsername.equals(oldReview.reviewedUser?.username, true)) {
+            throw ReviewException("You can't respond to a review that's not meant for logged in user", ErrorCode.REVIEW_IS_NOT_FOR_LOGGED_IN_USER)
+        }
+        // Then we check if there is already answer to a review
+        val reviews = oldReview.offer?.reviews
+        if (reviews != null) {
+            if (reviews.size != 1) {
+                throw ReviewException("Review already have response", ErrorCode.REVIEW_ALREADY_HAVE_RESPONSE)
+            }
+        }
+        // We also have to validate number of stars
+        if (reviewDTO.numberOfStars!! < 0 || reviewDTO.numberOfStars!! > 10) {
+            throw ReviewException("Number of stars must be between 0 and 10", ErrorCode.INVALID_NUMBER_OF_STARS)
+        }
+        // If all is ok, we create review
+        val reviewForSave = reviewDTO.mapToReview()
+        reviewForSave.reviewedUser = oldReview.reviewer
+        reviewForSave.reviewer = loggedInUser
+        reviewForSave.offer = oldReview.offer
+
+        // Then we save it
+        val result = reviewRepository.save(reviewForSave)
+
+        // Then map it and return it
         return ReviewResponseDTO(result)
     }
 }

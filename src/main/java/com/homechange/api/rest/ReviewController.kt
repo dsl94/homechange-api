@@ -2,6 +2,7 @@ package com.homechange.api.rest
 
 import com.homechange.api.error.ErrorMessage
 import com.homechange.api.error.ReviewException
+import com.homechange.api.rest.dto.review.GuestReviewRequestDTO
 import com.homechange.api.rest.dto.review.OwnerReviewRequestDTO
 import com.homechange.api.rest.dto.review.ReviewResponseDTO
 import com.homechange.api.service.ReviewService
@@ -29,6 +30,15 @@ class ReviewController {
     fun ownerReview(@Valid @RequestBody requestDTO: OwnerReviewRequestDTO): ResponseEntity<Any> {
         try{
             return ResponseEntity.ok(reviewService?.ownerReview(requestDTO))
+        } catch (e: ReviewException) {
+            return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
+        }
+    }
+
+    @RequestMapping(value = "/guestreview", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    fun guestReview(@Valid @RequestBody requestDTO: GuestReviewRequestDTO): ResponseEntity<Any> {
+        try{
+            return ResponseEntity.ok(reviewService?.guestReview(requestDTO))
         } catch (e: ReviewException) {
             return ResponseEntity.badRequest().body(ErrorMessage(e.errorCode, e.message?:""))
         }

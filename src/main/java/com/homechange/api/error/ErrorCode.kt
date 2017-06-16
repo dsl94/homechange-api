@@ -46,5 +46,11 @@ enum class ErrorCode {
     // Code when number of stars is not beetwen 0 and 10
     INVALID_NUMBER_OF_STARS,
     // Code when offer has review
-    OFFER_ALREADY_HAVE_REVIEW
+    OFFER_ALREADY_HAVE_REVIEW,
+    // Code when review is not found
+    REVIEW_NOT_FOUND,
+    // Code when you try to respond on review that's not for logged in user
+    REVIEW_IS_NOT_FOR_LOGGED_IN_USER,
+    // Code when review already have response
+    REVIEW_ALREADY_HAVE_RESPONSE
 }
