@@ -38,5 +38,11 @@ data class User (
     var sentMessages: List<Message>? = null,
 
     @OneToMany(mappedBy = "recipient")
-    var receivedMessages: List<Message>? = null
+    var receivedMessages: List<Message>? = null,
+
+    @OneToMany(mappedBy = "reviewer")
+    var givenReviews: List<Review>? = null,
+
+    @OneToMany(mappedBy = "reviewedUser")
+    var receivedReviews: List<Review>? = null
 )

@@ -165,6 +165,7 @@ class MessageServiceImpl : MessageService {
      *
      * @return List of messages
      */
+    @Throws(MessageException::class)
     override fun getThreadMessages(lastMessageId: Long): MessagesResponseDTO {
         val lastMessage = messageRepository?.findOne(lastMessageId) ?: throw MessageException("Message with that ID does not exist", ErrorCode.MESSAGE_NOT_FOUND)
         // Getting logged in username
@@ -184,7 +185,7 @@ class MessageServiceImpl : MessageService {
      * *
      * @return Messages in thread
      */
-    private fun messagesInThread(offer: Offer?, username1: String?, username2: String?): List<Message> {
+    override fun messagesInThread(offer: Offer?, username1: String?, username2: String?): List<Message> {
         val messagesForOffer = messageRepository?.findByOfferOrderBySentDateAndTimeAsc(offer!!)
         val threadMessages = ArrayList<Message>()
 

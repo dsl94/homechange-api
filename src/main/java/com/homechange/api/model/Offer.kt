@@ -31,5 +31,8 @@ data class Offer (
     var user: User? = null,
 
     @OneToMany(mappedBy = "offer")
-    var messages: List<Message>? = null
+    var messages: List<Message>? = null,
+
+    @OneToMany(mappedBy = "offer")
+    var reviews: List<Review>? = null
 )

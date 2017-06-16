@@ -1,6 +1,8 @@
 package com.homechange.api.service
 
 import com.homechange.api.error.MessageException
+import com.homechange.api.model.Message
+import com.homechange.api.model.Offer
 import com.homechange.api.rest.dto.message.*
 
 /**
@@ -45,5 +47,14 @@ interface MessageService {
      *
      * @return List of messages
      */
+    @Throws(MessageException::class)
     fun getThreadMessages(lastMessageId: Long): MessagesResponseDTO
+
+    /**
+     * Helper method that finds all messages in thread
+     * @param offer Offer
+     * *
+     * @return Messages in thread
+     */
+    fun messagesInThread(offer: Offer?, username1: String?, username2: String?): List<Message>
 }

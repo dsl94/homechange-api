@@ -38,5 +38,13 @@ enum class ErrorCode {
     // Code when users are not the same as in last message
     USERS_NOT_THE_SAME,
     // Code when thread is not users thread
-    THREAD_IS_NOT_USERS
+    THREAD_IS_NOT_USERS,
+    // Code when offers date is larger then current date
+    OFFER_NOT_ENDED,
+    // Code when you try to review user without enoug communication
+    NOT_ENOUGH_COMMUNICATION,
+    // Code when number of stars is not beetwen 0 and 10
+    INVALID_NUMBER_OF_STARS,
+    // Code when offer has review
+    OFFER_ALREADY_HAVE_REVIEW
 }
