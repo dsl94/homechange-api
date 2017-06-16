@@ -3,11 +3,16 @@ package com.homechange.api.service.impl
 import com.homechange.api.error.ErrorCode
 import com.homechange.api.error.UserException
 import com.homechange.api.model.User
+import com.homechange.api.repository.ReviewRepository
 import com.homechange.api.repository.UserRepository
+import com.homechange.api.rest.dto.review.ReviewResponseDTO
+import com.homechange.api.rest.dto.review.UsersReviewsDTO
+import com.homechange.api.rest.dto.user.LoggedInUserProfileDTO
 import com.homechange.api.rest.dto.user.UserRequestDTO
 import com.homechange.api.rest.dto.user.UserResponseDTO
 import com.homechange.api.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -25,6 +30,9 @@ class UserServiceImpl : UserService {
 
     @Autowired
     private val userRepository: UserRepository? = null
+
+    @Autowired
+    private val reviewRepository: ReviewRepository? = null
 
 
     /**
@@ -123,4 +131,30 @@ class UserServiceImpl : UserService {
             }
             return list
         }
+
+    /**
+     * Method that return profile of logged in user
+     */
+    @Throws(UserException::class)
+    override fun loggedInUserProfile(): LoggedInUserProfileDTO {
+        val auth = SecurityContextHolder.getContext().authentication
+        val loggedInUsername = auth.principal as String
+        val userResponse = this[loggedInUsername]
+        val plainReviews = reviewRepository?.findByReviewedUser(userRepository?.findByUsernameIgnoreCase(loggedInUsername)!!)
+        val reviews = UsersReviewsDTO()
+        val reviewsResponses = mutableListOf<ReviewResponseDTO>()
+        var sumOfStars = 0.0
+        for (review in plainReviews!!) {
+            val r = ReviewResponseDTO(review)
+            sumOfStars = sumOfStars.plus(r.numberOfStars?:0)
+            reviewsResponses.add(r)
+        }
+        reviews.numberOfReviews = plainReviews.size
+        reviews.averageNumberOfStars = sumOfStars.div(plainReviews.size)
+        reviews.reviews = reviewsResponses
+
+        val response = LoggedInUserProfileDTO(userResponse, reviews)
+
+        return response
+    }
 }

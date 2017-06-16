@@ -105,6 +105,7 @@ class ReviewServiceImpl : ReviewService{
      *
      * @return Review response DTO
      */
+    @Throws(ReviewException::class)
     override fun guestReview(reviewDTO: GuestReviewRequestDTO): ReviewResponseDTO {
         // First we try to load review on which we are responding
         val oldReview = reviewRepository?.findOne(reviewDTO.ownerReviewId) ?: throw ReviewException("Review on which you are trying to respond is not found", ErrorCode.REVIEW_NOT_FOUND)
