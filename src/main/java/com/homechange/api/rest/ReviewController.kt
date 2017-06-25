@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 /**
@@ -26,6 +23,7 @@ class ReviewController {
     @Autowired
     val reviewService: ReviewService? = null
 
+    @CrossOrigin
     @RequestMapping(value = "/ownerreview", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun ownerReview(@Valid @RequestBody requestDTO: OwnerReviewRequestDTO): ResponseEntity<Any> {
         try{
@@ -35,6 +33,7 @@ class ReviewController {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/guestreview", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun guestReview(@Valid @RequestBody requestDTO: GuestReviewRequestDTO): ResponseEntity<Any> {
         try{

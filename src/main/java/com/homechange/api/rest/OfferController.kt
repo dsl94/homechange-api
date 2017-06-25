@@ -24,6 +24,7 @@ class OfferController {
     @Autowired
     private val offerService: OfferService? = null
 
+    @CrossOrigin
     @RequestMapping(value = "/sec/createoffer", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun createOffer(@Valid @RequestBody requestDTO: CreateOfferRequestDTO): ResponseEntity<Any> {
         try {
@@ -34,6 +35,7 @@ class OfferController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/sec/deactivateffer", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun deactivateOffer(@RequestParam id: Long?): ResponseEntity<Any> {
         try {
@@ -44,6 +46,7 @@ class OfferController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/offerdetails", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun offerDetails(@RequestParam id: Long?): ResponseEntity<Any> {
         try {
@@ -54,6 +57,7 @@ class OfferController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/findoffer", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun findOffers(@RequestParam query: String): ResponseEntity<Any> {
         return ResponseEntity.ok(offerService?.findOffers(query))

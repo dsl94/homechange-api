@@ -25,6 +25,7 @@ class MessageController {
     @Autowired
     private val messageService: MessageService? = null
 
+    @CrossOrigin
     @RequestMapping(value = "/sendmessage", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun sendMessage(@Valid @RequestBody messageDTO: SendMessageDTO): ResponseEntity<Any> {
         try {
@@ -35,6 +36,7 @@ class MessageController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/messagereply", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun replyOnMessage(@Valid @RequestBody replyMessageDTO: ReplyMessageDTO): ResponseEntity<Any> {
         try {
@@ -45,6 +47,7 @@ class MessageController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/usermessages", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun getUserMessages(): ResponseEntity<Any> {
         try {
@@ -54,6 +57,7 @@ class MessageController {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/threadmessages", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun getThreadMessages(@RequestParam lastMessageId: Long): ResponseEntity<Any> {
         try {

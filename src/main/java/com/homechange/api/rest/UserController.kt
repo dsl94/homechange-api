@@ -25,6 +25,7 @@ class UserController {
     @Autowired
     private val userService: UserService? = null
 
+    @CrossOrigin
     @RequestMapping(value = "/register", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun register(@Valid @RequestBody userRequestDTO: UserRequestDTO): ResponseEntity<Any> {
         try {
@@ -35,6 +36,7 @@ class UserController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/user/findbyid", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun findUserById(@RequestParam("id") id: Long?): ResponseEntity<Any> {
         try {
@@ -45,6 +47,7 @@ class UserController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/user/findbyemail", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun findUserByEmail(@RequestParam("email") email: String): ResponseEntity<Any> {
         try {
@@ -55,6 +58,7 @@ class UserController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/user/findbyusername", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun findUserByUsername(@RequestParam("username") username: String): ResponseEntity<Any> {
         try {
@@ -65,6 +69,7 @@ class UserController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/sec/myprofile", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun loggedInUserProfile(): ResponseEntity<Any> {
         try {
@@ -75,6 +80,7 @@ class UserController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/profile", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun publicUserProfile(@RequestParam("username") username: String): ResponseEntity<Any> {
         try {
@@ -85,6 +91,7 @@ class UserController {
 
     }
 
+    @CrossOrigin
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMyException(exception: Exception): ResponseEntity<Any> {
         return ResponseEntity.badRequest().body(ErrorMessage(ErrorCode.INVALID_PARAMETERS,

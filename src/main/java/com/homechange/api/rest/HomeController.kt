@@ -26,6 +26,7 @@ class HomeController {
     @Autowired
     private val homeService: HomeService? = null
 
+    @CrossOrigin
     @RequestMapping(value = "/sec/addhome", method = arrayOf(RequestMethod.POST), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun createHome(@Valid @RequestBody homeDTO: CreateHomeRequestDTO): ResponseEntity<Any> {
         try {
@@ -36,6 +37,7 @@ class HomeController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/sec/deletehome", method = arrayOf(RequestMethod.DELETE), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun deleteHome(@RequestParam id: Long?): ResponseEntity<Any> {
         try {
@@ -47,6 +49,7 @@ class HomeController {
 
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/homedetails", method = arrayOf(RequestMethod.GET), produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
     fun homeDetails(@RequestParam(value = "username", required = false) username: String,
                     @RequestParam(value = "homeId", required = false) homeId: Long?): ResponseEntity<Any> {
