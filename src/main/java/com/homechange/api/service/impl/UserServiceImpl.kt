@@ -7,16 +7,19 @@ import com.homechange.api.repository.ReviewRepository
 import com.homechange.api.repository.UserRepository
 import com.homechange.api.rest.dto.review.ReviewResponseDTO
 import com.homechange.api.rest.dto.review.UsersReviewsDTO
-import com.homechange.api.rest.dto.user.LoggedInUserProfileDTO
-import com.homechange.api.rest.dto.user.PublicUserProfileDTO
-import com.homechange.api.rest.dto.user.UserRequestDTO
-import com.homechange.api.rest.dto.user.UserResponseDTO
+import com.homechange.api.rest.dto.user.*
 import com.homechange.api.service.UserService
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 
 import java.util.ArrayList
 import java.util.stream.Collectors
@@ -34,6 +37,13 @@ class UserServiceImpl : UserService {
 
     @Autowired
     private val reviewRepository: ReviewRepository? = null
+
+    @Value("\${profile.prefix}")
+    val profilePicturePrefix: String? = null
+
+    @Value("\${profile.location}")
+    val profilePictureLocation: String? = null
+
 
 
     /**
@@ -158,6 +168,38 @@ class UserServiceImpl : UserService {
         val reviews = usersReviewsDTO(user.username!!)
 
         val response = PublicUserProfileDTO(user.id!!, user.username!!,user.firstName!!, user.lastName!!, user.country!!, user.city!!, reviews)
+
+        return response
+    }
+
+    /**
+     * Method used for saving profile picture of the user
+     * If user have profile picture, the old one will be deleted
+     * and new one will be uploaded
+     */
+    override fun uploadProfilePicture(profilePictureDTO: UserPictureUploadDTO): UserPictureUploadResponseDTO {
+        // First try to find user by username
+        val user = userRepository?.findByUsernameIgnoreCase(profilePictureDTO.username) ?: throw UserException("User with that username does not exist", ErrorCode.USER_NOT_FOUND)
+        // Check if user have picture and delete it if exists
+        val existingImage = Paths.get(profilePictureLocation + "/" + profilePicturePrefix + user.id + ".jpg")
+        if (Files.exists(existingImage)){
+            try {
+                Files.delete(existingImage)
+            } catch (e: IOException) {
+                throw UserException("There was a problem with deleting existing profile picture", ErrorCode.GENERAL_ERROR)
+            }
+        }
+
+        // Now save picture
+        try {
+            FileUtils.writeByteArrayToFile(File(profilePictureLocation + "/" + profilePicturePrefix + user.id + ".jpg"), profilePictureDTO.cvFile)
+        } catch (e: IOException) {
+            throw UserException("There was a problem with saving profile picture", ErrorCode.GENERAL_ERROR)
+        }
+
+        val response: UserPictureUploadResponseDTO = UserPictureUploadResponseDTO()
+        response.username = user.username
+        response.profilePictureId = profilePicturePrefix + user.id + ".jpg"
 
         return response
     }

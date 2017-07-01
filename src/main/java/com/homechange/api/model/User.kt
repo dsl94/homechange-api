@@ -26,6 +26,7 @@ data class User (
     var address: String? = null,
     var dateOfBirth: Date? = null,
     var phoneNumber: String? = null,
+    var profilePictureId: String? = null,
 
     @OneToOne(cascade = arrayOf(CascadeType.ALL))
     @JoinColumn(name = "home_id")

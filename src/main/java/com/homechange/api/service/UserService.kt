@@ -1,10 +1,7 @@
 package com.homechange.api.service
 
 import com.homechange.api.error.UserException
-import com.homechange.api.rest.dto.user.LoggedInUserProfileDTO
-import com.homechange.api.rest.dto.user.PublicUserProfileDTO
-import com.homechange.api.rest.dto.user.UserRequestDTO
-import com.homechange.api.rest.dto.user.UserResponseDTO
+import com.homechange.api.rest.dto.user.*
 
 /**
  * Created by Nemanja on 5/14/17.
@@ -66,4 +63,12 @@ interface UserService {
      */
     @Throws(UserException::class)
     fun publicInUserProfile(username: String): PublicUserProfileDTO
+
+    /**
+     * Method used for saving profile picture of the user
+     * If user have profile picture, the old one will be deleted
+     * and new one will be uploaded
+     */
+    @Throws(UserException::class)
+    fun uploadProfilePicture(profilePictureDTO: UserPictureUploadDTO): UserPictureUploadResponseDTO
 }
